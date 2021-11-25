@@ -7,6 +7,8 @@ import dagger.Module
 import dagger.Provides
 import name.paynd.study.easypark.api.CitiesApiService
 import name.paynd.study.easypark.api.createCitiesApiService
+import name.paynd.study.easypark.location.Location
+import name.paynd.study.easypark.location.LocationImpl
 
 @[AppScope Component(modules = [AppModule::class, NetworkApiModule::class, LocationModule::class])]
 interface AppComponent {
@@ -36,5 +38,7 @@ class NetworkApiModule() {
 
 @Module
 class LocationModule() {
-
+    @Provides
+    @AppScope
+    fun provideLocation(): Location = LocationImpl()
 }

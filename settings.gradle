@@ -3,6 +3,12 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+    plugins {
+        id 'com.android.application' version '7.1.0-alpha09'
+        id 'com.android.library' version '7.1.0-alpha09'
+        id 'org.jetbrains.kotlin.android' version '1.5.30'
     }
 }
 dependencyResolutionManagement {
@@ -10,7 +16,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
+
 rootProject.name = "easypark"
 include ':app'
