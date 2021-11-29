@@ -1,26 +1,13 @@
 package name.paynd.study.easypark.ui.cities
 
-import android.util.Log
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 import name.paynd.study.easypark.api.CitiesRepo
+import name.paynd.study.easypark.api.CityDistance
 import javax.inject.Inject
 
 class CitiesVM @Inject constructor(
-    private val citiesRepo: CitiesRepo
+    citiesRepo: CitiesRepo
 ) : ViewModel() {
-    fun loadCities() {
-        viewModelScope.launch {
-            citiesRepo.citiesDistances.collect { list ->
-                list?.forEach {
-                    Log.d("####", "collect ${it.city.name} - ${it.distance}")
-                }
-            }
-        }
-    }
+    val citiesDistances: Flow<List<CityDistance>?> = citiesRepo.citiesDistances
 }

@@ -1,7 +1,6 @@
 package name.paynd.study.easypark.api
 
 import com.squareup.moshi.Json
-import kotlinx.serialization.Serializable
 
 data class CitiesResponse(
     @field:Json(name = "status") val status: String,

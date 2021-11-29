@@ -11,11 +11,19 @@
         android:label="CitiesFragment">
         <action
             android:id="@+id/action_citiesFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
+            app:destination="@id/mapFragment" >
+            <argument
+                android:name="cityName"
+                app:argType="string" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
         android:name="name.paynd.study.easypark.ui.map.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map">
+        <argument
+            android:name="cityName"
+            app:argType="string" />
+    </fragment>
 </navigation>
