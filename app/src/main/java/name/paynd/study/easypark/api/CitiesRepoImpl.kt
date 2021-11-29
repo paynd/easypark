@@ -1,18 +1,49 @@
 package name.paynd.study.easypark.api
 
-import kotlinx.coroutines.flow.SharedFlow
-import name.paynd.study.easypark.location.Location
+import android.location.Location
+import android.util.Log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import name.paynd.study.easypark.location.LocationProvider
+import name.paynd.study.easypark.location.LocationState
 import javax.inject.Inject
 
 class CitiesRepoImpl @Inject constructor(
-    val apiService: CitiesApiService,
-    val location: Location
+    private val apiService: CitiesApiService,
+    locationService: LocationProvider,
+    externalScope: CoroutineScope
 ) : CitiesRepo {
-    override fun getCityBoundaries(cityId: String): CityBoundaries {
-        TODO("Not yet implemented")
-    }
+    override val citiesFlow = flow { emit(apiService.getCities().cities) }
+        .flowOn(Dispatchers.IO)
+        .shareIn(
+            externalScope,
+            replay = 1,
+            started = SharingStarted.WhileSubscribed()
+        )
 
-    override fun getCityDistancesList(): SharedFlow<List<CityDistance>> {
-        TODO("Not yet implemented")
-    }
+    override val citiesDistances =
+        locationService.locationHotState.combine(citiesFlow) { locationState, cities ->
+            Log.d("####", "combine: $locationState $cities")
+            when (locationState) {
+
+                is LocationState.Success -> {
+                    cities.map { city ->
+                        CityDistance(
+                            city,
+                            Location(city.name)
+                                .apply {
+                                    latitude = city.lat
+                                    longitude = city.lon
+                                }
+                                .distanceTo(locationState.location)
+                                .toKm()
+                        )
+                    }
+                }
+                else -> null
+            }
+        }
+
+    private fun Float.toKm() = (this / 1000).toInt()
 }

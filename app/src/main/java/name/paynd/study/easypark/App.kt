@@ -6,7 +6,7 @@ import name.paynd.study.easypark.di.DaggerAppComponent
 
 class App : Application() {
 
-    val daggerAppComponent: AppComponent by lazy{
+    val daggerAppComponent: AppComponent by lazy {
         DaggerAppComponent.builder()
             .application(this)
             .build()

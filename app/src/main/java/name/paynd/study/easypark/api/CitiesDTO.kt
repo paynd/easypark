@@ -1,21 +1,20 @@
 package name.paynd.study.easypark.api
 
+import com.squareup.moshi.Json
 import kotlinx.serialization.Serializable
 
-@Serializable
 data class CitiesResponse(
-    val status: String,
-    val message: String?,
-    val cities: List<City>
+    @field:Json(name = "status") val status: String,
+    @field:Json(name = "message") val message: String?,
+    @field:Json(name = "cities") val cities: List<City>
 )
 
-@Serializable
 data class City(
-    val name: String,
-    val lat: Double,
-    val lon: Double,
-    val r: Int,
-    val points: String // todo, add transformation
+    @field:Json(name = "name") val name: String,
+    @field:Json(name = "lat") val lat: Double,
+    @field:Json(name = "lon") val lon: Double,
+    @field:Json(name = "r") val radius: Int,
+    @field:Json(name = "points") val points: String // todo, add transformation
 )
 
 data class CityBoundaries(
