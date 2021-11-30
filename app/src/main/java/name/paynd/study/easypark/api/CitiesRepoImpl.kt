@@ -23,10 +23,8 @@ class CitiesRepoImpl @Inject constructor(
         )
 
     override val citiesDistances =
-        locationService.locationHotState.combine(citiesFlow) { locationState, cities ->
-            Log.d("####", "combine: $locationState $cities")
+        locationService.locationState.combine(citiesFlow) { locationState, cities ->
             when (locationState) {
-
                 is LocationState.Success -> {
                     cities.map { city ->
                         CityDistance(
@@ -44,6 +42,14 @@ class CitiesRepoImpl @Inject constructor(
                 else -> null
             }
         }
+
+    override fun loadCity(name: String): Flow<City?> {
+        return citiesFlow.map { list ->
+            list.findLast { city ->
+                city.name == name
+            }
+        }
+    }
 
     private fun Float.toKm() = (this / 1000).toInt()
 }

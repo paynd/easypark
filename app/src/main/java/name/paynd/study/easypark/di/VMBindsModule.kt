@@ -6,6 +6,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import name.paynd.study.easypark.ui.cities.CitiesVM
+import name.paynd.study.easypark.ui.map.MapVM
 
 @Module
 interface VMBindsModule {
@@ -15,4 +16,6 @@ interface VMBindsModule {
     @[AppScope Binds IntoMap VMKey(CitiesVM::class)]
     fun bindClientListViewModel(sourcesViewModel: CitiesVM): ViewModel
 
+    @[AppScope Binds IntoMap VMKey(MapVM::class)]
+    fun bindMapViewModel(sourcesViewModel: MapVM): ViewModel
 }

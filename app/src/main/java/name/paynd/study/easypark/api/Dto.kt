@@ -1,5 +1,7 @@
 package name.paynd.study.easypark.api
 
+import android.location.Location
+import com.mapbox.geojson.Point
 import com.squareup.moshi.Json
 
 data class CitiesResponse(
@@ -13,12 +15,7 @@ data class City(
     @field:Json(name = "lat") val lat: Double,
     @field:Json(name = "lon") val lon: Double,
     @field:Json(name = "r") val radius: Int,
-    @field:Json(name = "points") val points: String // todo, add transformation
-)
-
-data class CityBoundaries(
-    val id: String,
-    val boundaries: ArrayList<MapPoint>
+    @field:Json(name = "points") val points: List<MapPoint>
 )
 
 data class MapPoint(
@@ -30,3 +27,7 @@ data class CityDistance(
     val city: City,
     val distance: Int // lets say it's rounded distance
 )
+
+fun City.toPoint() = Point.fromLngLat(lon, lat)
+fun MapPoint.toPoint() = Point.fromLngLat(lon, lat)
+fun Location.toPoint() = Point.fromLngLat(longitude, latitude)

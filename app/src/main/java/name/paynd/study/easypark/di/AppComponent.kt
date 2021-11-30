@@ -69,6 +69,5 @@ class NetworkApiModule {
 class LocationModule {
     @Provides
     @AppScope
-    fun provideLocation(context: Context, coroutineScope: CoroutineScope): LocationProvider =
-        LocationProviderImpl(context, coroutineScope)
+    fun provideLocation(context: Context): LocationProvider = LocationProviderImpl(context)
 }

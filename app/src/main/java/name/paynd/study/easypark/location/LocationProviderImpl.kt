@@ -12,7 +12,6 @@ import javax.inject.Inject
 
 class LocationProviderImpl @Inject constructor(
     private val context: Context,
-    externalScope: CoroutineScope
 ) : LocationProvider {
     //    init {
 //        Locus
@@ -27,22 +26,19 @@ class LocationProviderImpl @Inject constructor(
 //    }
 
     @ExperimentalCoroutinesApi
-    override val locationHotState = callbackFlow {
-        Log.d("####", "locationHotState")
+    override val locationState = callbackFlow {
         Locus.getCurrentLocation(context) { result ->
             when {
                 result.location != null -> {
-                    Log.d("####", "${result.location}")
                     trySend(
                         LocationState.Success(result.location as Location)
                     )
 
                 }
                 else -> {
-                    Log.d("####", "${result.error?.message}")
                     trySend(
                         LocationState.Error(
-                            result.error?.message ?: "Unknown error my friend, really unknown"
+                            result.error?.message ?: "Unknown error my friend, really unknown!"
                         )
                     )
 
@@ -50,7 +46,8 @@ class LocationProviderImpl @Inject constructor(
             }
         }
 
-        awaitClose {} //todo: we need more elegant solution
+        //todo: we need more elegant solution, use mapbox location provider instead of locus?
+        awaitClose {}
     }
 }
 

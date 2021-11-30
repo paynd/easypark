@@ -14,7 +14,9 @@ interface CitiesApiService {
 fun createCitiesApiService(): CitiesApiService {
     val okHttpClient = OkHttpClient.Builder().build()
 
-    val moshi = Moshi.Builder().build()
+    val moshi = Moshi.Builder()
+        .add(CitiesPointsAdapter())
+        .build()
 
     val retrofit = Retrofit.Builder()
         .baseUrl("https://pgroute-staging.easyparksystem.net/")
