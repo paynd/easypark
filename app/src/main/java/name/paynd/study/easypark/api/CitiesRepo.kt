@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface CitiesRepo {
     val citiesFlow: Flow<List<City>?>
-    val citiesDistances: Flow<List<CityDistance>?>
+    val citiesDistances: Flow<RepoResult>
 
     fun loadCity(name: String): Flow<City?>
 }

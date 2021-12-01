@@ -3,6 +3,7 @@ package name.paynd.study.easypark.ui.cities
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -12,6 +13,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.flow.collect
 import name.paynd.study.easypark.App
 import name.paynd.study.easypark.R
+import name.paynd.study.easypark.api.RepoResult
 import name.paynd.study.easypark.databinding.FragmentCitiesBinding
 import name.paynd.study.easypark.di.VMFactory
 import javax.inject.Inject
@@ -45,8 +47,15 @@ class CitiesFragment : Fragment(R.layout.fragment_cities) {
         }
 
         lifecycleScope.launchWhenResumed {
-            viewModel.citiesDistances.collect { list ->
-                citiesAdapter?.submitList(list)
+            viewModel.citiesDistances.collect { result ->
+                when (result) {
+                    is RepoResult.Success -> {
+                        citiesAdapter?.submitList(result.cities)
+                    }
+                    is RepoResult.Error -> {
+                        Toast.makeText(context, result.msg, Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         }
     }

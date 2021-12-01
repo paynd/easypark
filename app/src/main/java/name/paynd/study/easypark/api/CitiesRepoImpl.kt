@@ -1,7 +1,6 @@
 package name.paynd.study.easypark.api
 
 import android.location.Location
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -22,11 +21,11 @@ class CitiesRepoImpl @Inject constructor(
             started = SharingStarted.WhileSubscribed()
         )
 
-    override val citiesDistances =
+    override val citiesDistances: Flow<RepoResult> =
         locationService.locationState.combine(citiesFlow) { locationState, cities ->
             when (locationState) {
                 is LocationState.Success -> {
-                    cities.map { city ->
+                    val list = cities.map { city ->
                         CityDistance(
                             city,
                             Location(city.name)
@@ -38,8 +37,9 @@ class CitiesRepoImpl @Inject constructor(
                                 .toKm()
                         )
                     }
+                    RepoResult.Success(list)
                 }
-                else -> null
+                is LocationState.Error -> RepoResult.Error("Location error: ${locationState.message}")
             }
         }
 
